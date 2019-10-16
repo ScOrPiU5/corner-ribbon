@@ -5,21 +5,23 @@
 @import "../settings/tightnesses";
 @import "../settings/interaction";
 
-@import "../../node_modules/mathsass/dist/functions/sqrt";
-@import "../../node_modules/mathsass/dist/functions/pow";
+@import "mathsass/dist/_math.scss";
 
 @mixin corner-label-container-base {
   position: absolute;
   overflow: hidden;
   pointer-events: none;
 
-  @each $tightness-name, $tightness-size in $corner-label-tightnesses {
-    @if $tightness-name == default {
+  @each $tightness-name,
+  $tightness-size in $corner-label-tightnesses {
+    @if $tightness-name==default {
       top: -$tightness-size * 1px;
       left: -$tightness-size * 1px;
       width: calc(100% + #{$tightness-size * 2px});
       height: calc(100% + #{$tightness-size * 2px});
-    } @else {
+    }
+
+    @else {
       &--#{$tightness-name} {
         top: -$tightness-size * 1px;
         left: -$tightness-size * 1px;
@@ -29,13 +31,12 @@
     }
   }
 }
-  
+
 @mixin corner-label-base {
   position: absolute;
   top: 0;
   padding:
-    ($corner-label-padding-vertical * 1px)
-    (20 + $corner-label-padding-horizontal) * 1px; // 20 covers the diagonal
+    ($corner-label-padding-vertical * 1px) (20 + $corner-label-padding-horizontal) * 1px; // 20 covers the diagonal
   margin: 0;
   pointer-events: auto;
   text-decoration: none;
@@ -47,8 +48,9 @@
     transition: background-color $corner-label-transition-background;
   }
 
-  @each $color-name, $color-details in $corner-label-colors {
-    @if $color-name == default {
+  @each $color-name,
+  $color-details in $corner-label-colors {
+    @if $color-name==default {
       color: map-get($color-details, color);
       background: map-get($color-details, background-color);
 
@@ -62,17 +64,19 @@
       &::after {
         border-color: map-get($color-details, shadow-color);
       }
-    } @else {
+    }
+
+    @else {
       &--#{ $color-name } {
         color: map-get($color-details, color);
         background: map-get($color-details, background-color);
-  
+
         @if $corner-label-change-background-on-hover {
           &:hover {
             background: map-get($color-details, hover-background-color);
           }
         }
-  
+
         &::before,
         &::after {
           border-color: map-get($color-details, shadow-color);
@@ -80,7 +84,7 @@
       }
     }
   }
-  
+
   &::before,
   &::after {
     content: '';
@@ -91,22 +95,25 @@
     border-bottom-color: transparent;
 
     // TODO: Work out how to neatly remove the selector from here
-    @each $tightness-name, $tightness-size in $corner-label-tightnesses {
-      @if $tightness-name == default {
+    @each $tightness-name,
+    $tightness-size in $corner-label-tightnesses {
+      @if $tightness-name==default {
         border-width: sqrt(pow($tightness-size / 2, 2) * 2) * 1px;
-      } @else {
+      }
+
+      @else {
         #{$corner-label-container-selector}--#{$tightness-name} & {
           border-width: sqrt(pow($tightness-size / 2, 2) * 2) * 1px;
         }
       }
     }
   }
-  
+
   &::before {
     left: 0;
     border-right-color: transparent;
   }
-  
+
   &::after {
     right: 0;
     border-left-color: transparent;
